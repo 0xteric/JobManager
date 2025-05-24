@@ -1,66 +1,47 @@
-## Foundry
+# 🧠 JobManager Smart Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A smart contract for managing freelance jobs on the blockchain. It allows clients to post jobs, freelancers to apply, and admins to assist or cancel jobs when necessary.
 
-Foundry consists of:
+## ✨ Features
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- ✅ Clients can post jobs with a defined budget
+- 💸 Clients can deposit the budget to secure payment
+- 🙋 Freelancers can apply to open jobs with a proposal and budget
+- 🧑‍⚖️ Clients select a freelancer from the applicants
+- ✅ Once completed, freelancers receive the payment
+- 🛡️ Admins can be assigned to moderate and cancel jobs if needed
 
-## Documentation
+## 🔐 Roles
 
-https://book.getfoundry.sh/
+- **Client**: Posts and manages their job offers.
+- **Freelancer**: Applies to jobs with proposals.
+- **Admin**: Can resolve or cancel jobs, and manage access.
 
-## Usage
+## 🔧 Main Functions
 
-### Build
+- `postJob(title, description, budget)`: Post a new job offer.
+- `depositBudget(jobId)`: Deposit ETH for the job's budget.
+- `applyToJob(jobId, proposal, proposalBudget)`: Submit a proposal to a job.
+- `selectFreelancer(jobId, freelancer)`: Select a freelancer for the job.
+- `finishJob(jobId)`: Mark the job as done and transfer funds to the freelancer.
+- `killJob(jobId)`: Cancel the job and return the deposit to the client.
+- `addAdmin(address)`: Add a new admin (only callable by existing admins).
+- `addJobAdmin(jobId)`: Assign an admin to a specific job.
+- `callAdmin(jobId)`: Notify admins to intervene.
 
-```shell
-$ forge build
-```
+## 📦 Storage
 
-### Test
+Each job stores:
 
-```shell
-$ forge test
-```
+- Job metadata (title, description, budget, status)
+- Client and selected freelancer addresses
+- Applicants list and their proposals (via mapping)
+- Assigned admin
 
-### Format
+## 🧪 Testing
 
-```shell
-$ forge fmt
-```
+Use [Foundry](https://book.getfoundry.sh/) to test:
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+```bash
+forge test
+forge coverage
